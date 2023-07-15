@@ -58,6 +58,21 @@ class SuratKeluarView extends GetView<SuratKeluarController> {
                               },
                             ),
                             TextFormField(
+                              readOnly: true,
+                              // expands: true,
+                              onTap: () async {
+                                final selectedDate = await showDatePicker(
+                                  context: context,
+                                  initialDate: DateTime.now(),
+                                  firstDate: DateTime(2000),
+                                  lastDate: DateTime(2100),
+                                );
+                                if (selectedDate != null) {
+                                  controller.tanggalC.text =
+                                      DateFormat("yyyy-MM-dd")
+                                          .format(selectedDate);
+                                }
+                              },
                               controller: controller.tanggalC,
                               decoration: const InputDecoration(
                                 labelText: "Tanggal Surat",
@@ -157,7 +172,14 @@ class SuratKeluarView extends GetView<SuratKeluarController> {
                                 controller.statusC.text,
                                 controller.selectedFilePath!);
                             Get.back();
-                            print(controller.suratList.length);
+                            Get.snackbar(
+                              "success",
+                              duration: const Duration(seconds: 3),
+                              "berhasil menambahkan surat keluar",
+                              colorText: Colors.white,
+                              backgroundColor: Colors.lightBlue,
+                              icon: const Icon(Icons.add_alert),
+                            );
                           }
                         },
                         child: const Text(

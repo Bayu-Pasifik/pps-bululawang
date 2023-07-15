@@ -71,10 +71,10 @@ class SuratKeluarController extends GetxController {
       var response = await request.send();
       if (response.statusCode == 201) {
         // Permintaan sukses
-        print('Surat keluar berhasil dibuat');
+
         await allSurat(); // Perbarui data surat keluar
-        // Get.back(); // Tutup dialog
-        update(); // Perbarui UI
+        update();
+        // Perbarui UI
       } else {
         // Permintaan gagal
         print(
