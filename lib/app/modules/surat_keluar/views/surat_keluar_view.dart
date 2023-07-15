@@ -1,3 +1,5 @@
+import 'package:expandable/expandable.dart';
+import 'package:expansion_tile_card/expansion_tile_card.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -10,10 +12,12 @@ import '../controllers/surat_keluar_controller.dart';
 class SuratKeluarView extends GetView<SuratKeluarController> {
   SuratKeluarView({Key? key}) : super(key: key);
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: const Color(0XFF2E2E2E),
+        resizeToAvoidBottomInset: true,
         appBar: AppBar(
           backgroundColor: const Color(0XFF2E2E2E),
           title: const Text('Surat Keluar'),
@@ -26,107 +30,121 @@ class SuratKeluarView extends GetView<SuratKeluarController> {
                     title: "Form Surat Baru",
                     titleStyle: const TextStyle(color: Colors.white),
                     content: SizedBox(
-                      height: 400,
+                      height: 290,
                       width: context.width,
                       child: Form(
                         key: _formKey,
                         // autovalidateMode: AutovalidateMode.onUserInteraction,
                         child: ListView(
                           children: [
-                            TextFormField(
-                              controller: controller.nomorC,
-                              decoration: const InputDecoration(
-                                labelText: "Nomor Surat",
-                              ),
-                              validator: (value) {
-                                if (value!.isEmpty) {
-                                  return 'Nomor Surat harus diisi';
-                                }
-                                return null;
-                              },
-                            ),
-                            TextFormField(
-                              controller: controller.judulC,
-                              decoration: const InputDecoration(
-                                labelText: "Judul Surat",
-                              ),
-                              validator: (value) {
-                                if (value!.isEmpty) {
-                                  return 'Judul Surat harus diisi';
-                                }
-                                return null;
-                              },
-                            ),
-                            TextFormField(
-                              readOnly: true,
-                              // expands: true,
-                              onTap: () async {
-                                final selectedDate = await showDatePicker(
-                                  context: context,
-                                  initialDate: DateTime.now(),
-                                  firstDate: DateTime(2000),
-                                  lastDate: DateTime(2100),
-                                );
-                                if (selectedDate != null) {
-                                  controller.tanggalC.text =
-                                      DateFormat("yyyy-MM-dd")
-                                          .format(selectedDate);
-                                }
-                              },
-                              controller: controller.tanggalC,
-                              decoration: const InputDecoration(
-                                labelText: "Tanggal Surat",
-                              ),
-                              validator: (value) {
-                                if (value!.isEmpty) {
-                                  return 'Tanggal Surat harus diisi';
-                                }
-                                return null;
-                              },
-                            ),
-                            TextFormField(
-                              initialValue: controller.tanggal,
-                              decoration: const InputDecoration(
-                                labelText: "Tanggal Upload",
-                              ),
-                              validator: (value) {
-                                if (value!.isEmpty) {
-                                  return 'Tanggal Upload harus diisi';
-                                }
-                                return null;
-                              },
-                            ),
-                            TextFormField(
-                              controller: controller.statusC,
-                              decoration: const InputDecoration(
-                                labelText: "Status",
-                              ),
-                              validator: (value) {
-                                if (value!.isEmpty) {
-                                  return 'Status harus diisi';
-                                }
-                                return null;
-                              },
-                            ),
-                            TextFormField(
-                              // enabled: false,
-                              readOnly: true,
-                              controller: controller.fileC,
-                              validator: (value) {
-                                if (value!.isEmpty) {
-                                  return 'File harus diisi';
-                                }
-                                return null;
-                              },
-                              decoration: const InputDecoration(
-                                labelText: "File",
+                            Expanded(
+                              child: TextFormField(
+                                controller: controller.nomorC,
+                                decoration: const InputDecoration(
+                                  labelText: "Nomor Surat",
+                                ),
+                                validator: (value) {
+                                  if (value!.isEmpty) {
+                                    return 'Nomor Surat harus diisi';
+                                  }
+                                  return null;
+                                },
                               ),
                             ),
-                            ElevatedButton(
-                              onPressed: () {
-                                controller.pickFile();
-                              },
-                              child: const Text("Ambil file"),
+                            Expanded(
+                              child: TextFormField(
+                                controller: controller.judulC,
+                                decoration: const InputDecoration(
+                                  labelText: "Judul Surat",
+                                ),
+                                validator: (value) {
+                                  if (value!.isEmpty) {
+                                    return 'Judul Surat harus diisi';
+                                  }
+                                  return null;
+                                },
+                              ),
+                            ),
+                            Expanded(
+                              child: TextFormField(
+                                readOnly: true,
+                                // expands: true,
+                                onTap: () async {
+                                  final selectedDate = await showDatePicker(
+                                    context: context,
+                                    initialDate: DateTime.now(),
+                                    firstDate: DateTime(2000),
+                                    lastDate: DateTime(2100),
+                                  );
+                                  if (selectedDate != null) {
+                                    controller.tanggalC.text =
+                                        DateFormat("yyyy-MM-dd")
+                                            .format(selectedDate);
+                                  }
+                                },
+                                controller: controller.tanggalC,
+                                decoration: const InputDecoration(
+                                  labelText: "Tanggal Surat",
+                                ),
+                                validator: (value) {
+                                  if (value!.isEmpty) {
+                                    return 'Tanggal Surat harus diisi';
+                                  }
+                                  return null;
+                                },
+                              ),
+                            ),
+                            Expanded(
+                              child: TextFormField(
+                                initialValue: controller.tanggal,
+                                decoration: const InputDecoration(
+                                  labelText: "Tanggal Upload",
+                                ),
+                                validator: (value) {
+                                  if (value!.isEmpty) {
+                                    return 'Tanggal Upload harus diisi';
+                                  }
+                                  return null;
+                                },
+                              ),
+                            ),
+                            Expanded(
+                              child: TextFormField(
+                                controller: controller.statusC,
+                                decoration: const InputDecoration(
+                                  labelText: "Status",
+                                ),
+                                validator: (value) {
+                                  if (value!.isEmpty) {
+                                    return 'Status harus diisi';
+                                  }
+                                  return null;
+                                },
+                              ),
+                            ),
+                            Expanded(
+                              child: TextFormField(
+                                // enabled: false,
+                                readOnly: true,
+                                controller: controller.fileC,
+                                validator: (value) {
+                                  if (value!.isEmpty) {
+                                    return 'File harus diisi';
+                                  }
+                                  return null;
+                                },
+                                decoration: const InputDecoration(
+                                  labelText: "File",
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  controller.pickFile();
+                                },
+                                child: const Text("Ambil file"),
+                              ),
                             ),
                             const SizedBox(height: 10),
                           ],
@@ -223,33 +241,75 @@ class SuratKeluarView extends GetView<SuratKeluarController> {
                       String tanggal = dateFormat
                           .format(suratMasuk.tanggalSurat ?? DateTime.now());
                       return Material(
-                        borderRadius: BorderRadius.circular(10),
-                        color: const Color.fromARGB(255, 83, 82, 82),
-                        elevation: 5,
-                        child: ListTile(
-                          leading: CircleAvatar(
-                            backgroundColor: const Color(0XFF2E2E2E),
-                            child: Text("${index + 1}"),
-                          ),
-                          title: Text(
-                            "${suratMasuk.noSurat}",
-                            style: GoogleFonts.prompt(color: Colors.white),
-                          ),
-                          subtitle: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text("${suratMasuk.judul}",
-                                  style:
-                                      GoogleFonts.prompt(color: Colors.white)),
-                              Text(tanggal,
-                                  style:
-                                      GoogleFonts.prompt(color: Colors.white))
-                            ],
-                          ),
-                          isThreeLine: true,
-                        ),
-                      );
+                          borderRadius: BorderRadius.circular(10),
+                          color: const Color.fromARGB(255, 83, 82, 82),
+                          elevation: 5,
+                          child: Padding(
+                            padding: const EdgeInsets.all(10),
+                            child: ExpandablePanel(
+                                header: Text("${suratMasuk.noSurat}",
+                                    style: GoogleFonts.prompt(
+                                        color: Colors.white)),
+                                collapsed: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(suratMasuk.judul!,
+                                        style: GoogleFonts.prompt(
+                                            color: Colors.white)),
+                                    Text(tanggal,
+                                        style: GoogleFonts.prompt(
+                                            color: Colors.white)),
+                                  ],
+                                ),
+                                expanded: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Text(suratMasuk.judul!,
+                                        style: GoogleFonts.prompt(
+                                            color: Colors.white)),
+                                    Text(tanggal,
+                                        style: GoogleFonts.prompt(
+                                            color: Colors.white)),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        IconButton(
+                                            onPressed: () {
+                                              controller.downloadAndView(
+                                                  suratMasuk.file!);
+                                            },
+                                            icon: const Icon(
+                                                Icons.remove_red_eye)),
+                                        IconButton(
+                                            onPressed: () {},
+                                            icon: const Icon(Icons.edit)),
+                                        IconButton(
+                                            onPressed: () {
+                                              controller.hapusSurat(
+                                                  suratMasuk.id.toString());
+
+                                              Get.snackbar(
+                                                "success",
+                                                duration:
+                                                    const Duration(seconds: 3),
+                                                "berhasil menghapus surat keluar",
+                                                colorText: Colors.white,
+                                                backgroundColor:
+                                                    Colors.lightBlue,
+                                                icon:
+                                                    const Icon(Icons.add_alert),
+                                              );
+                                            },
+                                            icon: const Icon(
+                                                Icons.delete_forever)),
+                                      ],
+                                    ),
+                                  ],
+                                )),
+                          ));
                     },
                   );
                 },
