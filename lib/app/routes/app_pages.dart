@@ -27,7 +27,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.SURAT_KELUAR,
-      page: () => const SuratKeluarView(),
+      page: () => SuratKeluarView(),
       binding: SuratKeluarBinding(),
     ),
   ];

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pps_bululawang/app/data/models/surat_masuk_models.dart';
-
+import 'package:intl/intl.dart';
 import '../controllers/surat_masuk_controller.dart';
 
 class SuratMasukView extends GetView<SuratMasukController> {
@@ -17,16 +17,17 @@ class SuratMasukView extends GetView<SuratMasukController> {
           title: const Text('Surat Masuk'),
           centerTitle: true,
           elevation: 0,
+          actions: [IconButton(onPressed: () {}, icon: const Icon(Icons.add))],
         ),
         body: SafeArea(
           child: FutureBuilder(
             future: controller.allSurat(),
             builder: (context, snapshot) {
-              if (snapshot.hasError) {
-                return Center(
-                  child: Text("Error : ${snapshot.error}"),
-                );
-              }
+              // if (snapshot.hasError) {
+              //   return Center(
+              //     child: Text("Error : ${snapshot.error}"),
+              //   );
+              // }
               if (snapshot.hasData) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(
@@ -40,6 +41,9 @@ class SuratMasukView extends GetView<SuratMasukController> {
                 itemCount: snapshot.data?.length ?? 0,
                 itemBuilder: (context, index) {
                   SuratMasuk suratMasuk = snapshot.data![index];
+                  DateFormat dateFormat = DateFormat("yyyy-MM-dd");
+                  String tanggal = dateFormat
+                      .format(suratMasuk.tanggalSurat ?? DateTime.now());
                   return Material(
                     borderRadius: BorderRadius.circular(10),
                     color: const Color.fromARGB(255, 83, 82, 82),
@@ -59,7 +63,7 @@ class SuratMasukView extends GetView<SuratMasukController> {
                         children: [
                           Text("${suratMasuk.judul}",
                               style: GoogleFonts.prompt(color: Colors.white)),
-                          Text("${suratMasuk.tanggalSurat}",
+                          Text(tanggal,
                               style: GoogleFonts.prompt(color: Colors.white))
                         ],
                       ),
