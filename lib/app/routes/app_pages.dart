@@ -1,5 +1,7 @@
 import 'package:get/get.dart';
 
+import '../modules/detailSurat/bindings/detail_surat_binding.dart';
+import '../modules/detailSurat/views/detail_surat_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
 import '../modules/surat_keluar/bindings/surat_keluar_binding.dart';
@@ -29,6 +31,11 @@ class AppPages {
       name: _Paths.SURAT_KELUAR,
       page: () => SuratKeluarView(),
       binding: SuratKeluarBinding(),
+    ),
+    GetPage(
+      name: _Paths.DETAIL_SURAT,
+      page: () =>  DetailSuratView(),
+      binding: DetailSuratBinding(),
     ),
   ];
 }

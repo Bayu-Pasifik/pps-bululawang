@@ -1,11 +1,11 @@
 import 'package:expandable/expandable.dart';
-import 'package:expansion_tile_card/expansion_tile_card.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:pps_bululawang/app/data/models/surat_masuk_models.dart';
+import 'package:pps_bululawang/app/routes/app_pages.dart';
 
 import '../controllers/surat_keluar_controller.dart';
 
@@ -37,114 +37,100 @@ class SuratKeluarView extends GetView<SuratKeluarController> {
                         // autovalidateMode: AutovalidateMode.onUserInteraction,
                         child: ListView(
                           children: [
-                            Expanded(
-                              child: TextFormField(
-                                controller: controller.nomorC,
-                                decoration: const InputDecoration(
-                                  labelText: "Nomor Surat",
-                                ),
-                                validator: (value) {
-                                  if (value!.isEmpty) {
-                                    return 'Nomor Surat harus diisi';
-                                  }
-                                  return null;
-                                },
+                            TextFormField(
+                              controller: controller.nomorC,
+                              decoration: const InputDecoration(
+                                labelText: "Nomor Surat",
+                              ),
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return 'Nomor Surat harus diisi';
+                                }
+                                return null;
+                              },
+                            ),
+                            TextFormField(
+                              controller: controller.judulC,
+                              decoration: const InputDecoration(
+                                labelText: "Judul Surat",
+                              ),
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return 'Judul Surat harus diisi';
+                                }
+                                return null;
+                              },
+                            ),
+                            TextFormField(
+                              readOnly: true,
+                              // expands: true,
+                              onTap: () async {
+                                final selectedDate = await showDatePicker(
+                                  context: context,
+                                  initialDate: DateTime.now(),
+                                  firstDate: DateTime(2000),
+                                  lastDate: DateTime(2100),
+                                );
+                                if (selectedDate != null) {
+                                  controller.tanggalC.text =
+                                      DateFormat("yyyy-MM-dd")
+                                          .format(selectedDate);
+                                }
+                              },
+                              controller: controller.tanggalC,
+                              decoration: const InputDecoration(
+                                labelText: "Tanggal Surat",
+                              ),
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return 'Tanggal Surat harus diisi';
+                                }
+                                return null;
+                              },
+                            ),
+                            TextFormField(
+                              initialValue: controller.tanggal,
+                              decoration: const InputDecoration(
+                                labelText: "Tanggal Upload",
+                              ),
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return 'Tanggal Upload harus diisi';
+                                }
+                                return null;
+                              },
+                            ),
+                            TextFormField(
+                              controller: controller.statusC,
+                              decoration: const InputDecoration(
+                                labelText: "Status",
+                              ),
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return 'Status harus diisi';
+                                }
+                                return null;
+                              },
+                            ),
+                            TextFormField(
+                              // enabled: false,
+                              readOnly: true,
+                              controller: controller.fileC,
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return 'File harus diisi';
+                                }
+                                return null;
+                              },
+                              decoration: const InputDecoration(
+                                labelText: "File",
                               ),
                             ),
-                            Expanded(
-                              child: TextFormField(
-                                controller: controller.judulC,
-                                decoration: const InputDecoration(
-                                  labelText: "Judul Surat",
-                                ),
-                                validator: (value) {
-                                  if (value!.isEmpty) {
-                                    return 'Judul Surat harus diisi';
-                                  }
-                                  return null;
-                                },
-                              ),
-                            ),
-                            Expanded(
-                              child: TextFormField(
-                                readOnly: true,
-                                // expands: true,
-                                onTap: () async {
-                                  final selectedDate = await showDatePicker(
-                                    context: context,
-                                    initialDate: DateTime.now(),
-                                    firstDate: DateTime(2000),
-                                    lastDate: DateTime(2100),
-                                  );
-                                  if (selectedDate != null) {
-                                    controller.tanggalC.text =
-                                        DateFormat("yyyy-MM-dd")
-                                            .format(selectedDate);
-                                  }
-                                },
-                                controller: controller.tanggalC,
-                                decoration: const InputDecoration(
-                                  labelText: "Tanggal Surat",
-                                ),
-                                validator: (value) {
-                                  if (value!.isEmpty) {
-                                    return 'Tanggal Surat harus diisi';
-                                  }
-                                  return null;
-                                },
-                              ),
-                            ),
-                            Expanded(
-                              child: TextFormField(
-                                initialValue: controller.tanggal,
-                                decoration: const InputDecoration(
-                                  labelText: "Tanggal Upload",
-                                ),
-                                validator: (value) {
-                                  if (value!.isEmpty) {
-                                    return 'Tanggal Upload harus diisi';
-                                  }
-                                  return null;
-                                },
-                              ),
-                            ),
-                            Expanded(
-                              child: TextFormField(
-                                controller: controller.statusC,
-                                decoration: const InputDecoration(
-                                  labelText: "Status",
-                                ),
-                                validator: (value) {
-                                  if (value!.isEmpty) {
-                                    return 'Status harus diisi';
-                                  }
-                                  return null;
-                                },
-                              ),
-                            ),
-                            Expanded(
-                              child: TextFormField(
-                                // enabled: false,
-                                readOnly: true,
-                                controller: controller.fileC,
-                                validator: (value) {
-                                  if (value!.isEmpty) {
-                                    return 'File harus diisi';
-                                  }
-                                  return null;
-                                },
-                                decoration: const InputDecoration(
-                                  labelText: "File",
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              child: ElevatedButton(
-                                onPressed: () {
-                                  controller.pickFile();
-                                },
-                                child: const Text("Ambil file"),
-                              ),
+                            ElevatedButton(
+                              onPressed: () {
+                                controller.pickFile();
+                              },
+                              child: const Text("Ambil file"),
                             ),
                             const SizedBox(height: 10),
                           ],
@@ -212,7 +198,7 @@ class SuratKeluarView extends GetView<SuratKeluarController> {
           ],
         ),
         body: SafeArea(
-          child: FutureBuilder(
+          child: FutureBuilder<List<SuratMasuk>>(
             future: controller.allSurat(),
             builder: (context, snapshot) {
               if (snapshot.hasError) {
@@ -278,13 +264,17 @@ class SuratKeluarView extends GetView<SuratKeluarController> {
                                       children: [
                                         IconButton(
                                             onPressed: () {
+                                              // print(suratMasuk.file);
                                               controller.downloadAndView(
                                                   suratMasuk.file!);
                                             },
                                             icon: const Icon(
                                                 Icons.remove_red_eye)),
                                         IconButton(
-                                            onPressed: () {},
+                                            onPressed: () {
+                                              Get.toNamed(Routes.DETAIL_SURAT,
+                                                  arguments: suratMasuk);
+                                            },
                                             icon: const Icon(Icons.edit)),
                                         IconButton(
                                             onPressed: () {

@@ -123,7 +123,8 @@ class SuratKeluarController extends GetxController {
         await tempFile.writeAsBytes(fileBytes);
 
         // Buka file menggunakan package open_file
-        OpenFilex.open(tempFile.path);
+        var open = await OpenFilex.open(tempFile.path);
+        print("openfilex = ${open.message}");
       } else {
         print(
             'Error: Gagal mengambil data file dari URL. Status code: ${response.statusCode}');
