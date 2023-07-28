@@ -1,5 +1,7 @@
 import 'package:get/get.dart';
 
+import '../modules/Login/bindings/login_binding.dart';
+import '../modules/Login/views/login_view.dart';
 import '../modules/detailSurat/bindings/detail_surat_binding.dart';
 import '../modules/detailSurat/views/detail_surat_view.dart';
 import '../modules/home/bindings/home_binding.dart';
@@ -8,6 +10,8 @@ import '../modules/surat_keluar/bindings/surat_keluar_binding.dart';
 import '../modules/surat_keluar/views/surat_keluar_view.dart';
 import '../modules/surat_masuk/bindings/surat_masuk_binding.dart';
 import '../modules/surat_masuk/views/surat_masuk_view.dart';
+import '../modules/tambah_surat/bindings/tambah_surat_binding.dart';
+import '../modules/tambah_surat/views/tambah_surat_view.dart';
 
 part 'app_routes.dart';
 
@@ -34,8 +38,18 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.DETAIL_SURAT,
-      page: () =>  DetailSuratView(),
+      page: () => DetailSuratView(),
       binding: DetailSuratBinding(),
+    ),
+    GetPage(
+      name: _Paths.LOGIN,
+      page: () => LoginView(),
+      binding: LoginBinding(),
+    ),
+    GetPage(
+      name: _Paths.TAMBAH_SURAT,
+      page: () => const TambahSuratView(),
+      binding: TambahSuratBinding(),
     ),
   ];
 }

@@ -1,16 +1,21 @@
 import 'package:http/http.dart' as http;
+import 'package:pps_bululawang/app/data/models/login.dart';
 import 'dart:convert';
 
 import 'package:pps_bululawang/app/data/models/surat_masuk_models.dart';
 
 void main() async {
-  String token =
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTEsImlhdCI6MTY4OTI2MjUzOSwiZXhwIjozMzc4NTMyMjc4fQ.NoagX9b9oJ3LX15li9CZ89F-4GfveVbmJPfarQUTpvU';
+  String baseUrl = "https://apippslaravel.kolektifhost.com";
+  String token = "";
 
-  Uri url = Uri.parse('https://apipps.kolektifhost.com/suratkeluar/47');
-  var response =
-      await http.get(url, headers: {'Authorization': 'Bearer $token'});
-  var tempData = json.decode(response.body);
-  var data = SuratMasuk.fromJson(tempData);
-  print(data.judul);
+  Uri url = Uri.parse('$baseUrl/api/login');
+  var response = await http.post(url,
+      body: {"email": "bayupasifik@gmail.com", "password": "bayu1234"});
+  var tempData = json.decode(response.body)["user"];
+  token = json.decode(response.body)["token"];
+  var data = Login.fromJson(tempData);
+  print(data.name);
+  // suratList.value = List<SuratMasuk>.from(data);
+  // return suratList;
+  // return tempData;
 }

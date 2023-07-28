@@ -12,11 +12,11 @@ import 'package:path/path.dart' as path;
 import 'package:pps_bululawang/app/modules/surat_keluar/controllers/surat_keluar_controller.dart';
 
 class DetailSuratController extends GetxController {
-  String token =
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTEsImlhdCI6MTY4OTI2MjUzOSwiZXhwIjozMzc4NTMyMjc4fQ.NoagX9b9oJ3LX15li9CZ89F-4GfveVbmJPfarQUTpvU';
+  // String token =
+  //     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTEsImlhdCI6MTY4OTI2MjUzOSwiZXhwIjozMzc4NTMyMjc4fQ.NoagX9b9oJ3LX15li9CZ89F-4GfveVbmJPfarQUTpvU';
   // ! get surat by id
   List<int>? fileBytes;
-  Future<SuratMasuk> getSuratById(String id) async {
+  Future<SuratMasuk> getSuratById(String id, String token) async {
     Uri url = Uri.parse('https://apipps.kolektifhost.com/suratkeluar/$id');
     var response =
         await http.get(url, headers: {'Authorization': 'Bearer $token'});
@@ -122,6 +122,7 @@ class DetailSuratController extends GetxController {
   }
 
   Future<void> updateSuratKeluar(
+    String token,
     String id,
     String no,
     String judul,
@@ -163,7 +164,7 @@ class DetailSuratController extends GetxController {
       if (response.statusCode == 200) {
         // Permintaan sukses
 
-        await suratController.allSurat(); // Perbarui data surat keluar
+        // await suratController.allSurat(); // Perbarui data surat keluar
         update();
         // Perbarui UI
         Get.back();

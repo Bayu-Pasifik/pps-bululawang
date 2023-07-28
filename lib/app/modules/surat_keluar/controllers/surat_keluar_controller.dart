@@ -21,14 +21,12 @@ class SuratKeluarController extends GetxController {
   late DateFormat dateFormat;
   late String tanggal;
   RxList<SuratMasuk> suratList = <SuratMasuk>[].obs;
-  String token =
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTEsImlhdCI6MTY4OTI2MjUzOSwiZXhwIjozMzc4NTMyMjc4fQ.NoagX9b9oJ3LX15li9CZ89F-4GfveVbmJPfarQUTpvU';
-
-  Future<List<SuratMasuk>> allSurat() async {
-    Uri url = Uri.parse('https://apipps.kolektifhost.com/suratkeluar');
+  String baseUrl = "https://apippslaravel.kolektifhost.com";
+  Future<List<SuratMasuk>> allSurat(String token) async {
+    Uri url = Uri.parse('$baseUrl/api/suratkeluar');
     var response =
         await http.get(url, headers: {'Authorization': 'Bearer $token'});
-    var tempData = json.decode(response.body);
+    var tempData = json.decode(response.body)["data"];
     var data = tempData.map((e) => SuratMasuk.fromJson(e)).toList();
     suratList.value = List<SuratMasuk>.from(data);
     return suratList;
@@ -58,8 +56,14 @@ class SuratKeluarController extends GetxController {
     }
   }
 
-  Future<void> createSuratKeluar(String no, String judul, String tanggalSurat,
-      String tanggalUpload, String status, String filePath) async {
+  Future<void> createSuratKeluar(
+      String token,
+      String no,
+      String judul,
+      String tanggalSurat,
+      String tanggalUpload,
+      String status,
+      String filePath) async {
     try {
       Uri url = Uri.parse('https://apipps.kolektifhost.com/suratkeluar');
       var request = http.MultipartRequest('POST', url);
@@ -76,7 +80,7 @@ class SuratKeluarController extends GetxController {
       if (response.statusCode == 201) {
         // Permintaan sukses
 
-        await allSurat(); // Perbarui data surat keluar
+        // await allSurat(); // Perbarui data surat keluar
         update();
         // Perbarui UI
       } else {
@@ -91,13 +95,13 @@ class SuratKeluarController extends GetxController {
   }
 
   // ! delete data
-  Future<void> hapusSurat(String id) async {
+  Future<void> hapusSurat(String token, String id) async {
     Uri url = Uri.parse('https://apipps.kolektifhost.com/suratkeluar/$id');
     final response =
         await http.delete(url, headers: {'Authorization': 'Bearer $token'});
     print(response.statusCode);
     if (response.statusCode == 200) {
-      await allSurat(); // Perbarui data surat keluar
+      // await allSurat(); // Perbarui data surat keluar
       update();
       print('Data berhasil dihapus');
     } else {

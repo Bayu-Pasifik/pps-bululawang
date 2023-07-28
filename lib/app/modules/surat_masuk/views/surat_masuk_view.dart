@@ -41,9 +41,9 @@ class SuratMasukView extends GetView<SuratMasukController> {
                 itemCount: snapshot.data?.length ?? 0,
                 itemBuilder: (context, index) {
                   SuratMasuk suratMasuk = snapshot.data![index];
-                  DateFormat dateFormat = DateFormat("yyyy-MM-dd");
-                  String tanggal = dateFormat
-                      .format(suratMasuk.tanggalSurat ?? DateTime.now());
+                  // DateFormat dateFormat = DateFormat("yyyy-MM-dd");
+                  // String tanggal = dateFormat
+                  //     .format(suratMasuk.tanggalSurat ?? DateTime.now());
                   return Material(
                     borderRadius: BorderRadius.circular(10),
                     color: const Color.fromARGB(255, 83, 82, 82),
@@ -63,7 +63,7 @@ class SuratMasukView extends GetView<SuratMasukController> {
                         children: [
                           Text("${suratMasuk.judul}",
                               style: GoogleFonts.prompt(color: Colors.white)),
-                          Text(tanggal,
+                          Text(suratMasuk.tanggalSurat!,
                               style: GoogleFonts.prompt(color: Colors.white))
                         ],
                       ),

@@ -10,6 +10,8 @@ class HomeView extends GetView<HomeController> {
   const HomeView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    String token = Get.arguments;
+    print("token home :$token");
     return Scaffold(
         backgroundColor: const Color(0XFF2E2E2E),
         body: SafeArea(
@@ -86,7 +88,8 @@ class HomeView extends GetView<HomeController> {
                                 ),
                               ),
                               GestureDetector(
-                                onTap: () => Get.toNamed(Routes.SURAT_KELUAR),
+                                onTap: () => Get.toNamed(Routes.SURAT_KELUAR,
+                                    arguments: token),
                                 child: Material(
                                   elevation: 15,
                                   color: const Color(0XFF2E2E2E),

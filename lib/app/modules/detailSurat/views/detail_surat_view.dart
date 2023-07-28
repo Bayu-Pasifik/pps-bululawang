@@ -22,7 +22,7 @@ class DetailSuratView extends GetView<DetailSuratController> {
           centerTitle: true,
         ),
         body: FutureBuilder<SuratMasuk>(
-          future: controller.getSuratById(surat.id.toString()),
+          // future: controller.getSuratById(surat.id.toString()),
           builder: (context, snapshot) {
             if (snapshot.data == null) {
               return const Center(
@@ -44,8 +44,8 @@ class DetailSuratView extends GetView<DetailSuratController> {
               }
             }
             SuratMasuk suratMasuk = snapshot.data!;
-            controller.tanggalC.text =
-                DateFormat("yyyy-MM-dd").format(suratMasuk.tanggalSurat!);
+            controller.tanggalC.text = suratMasuk.tanggalSurat!;
+            // DateFormat("yyyy-MM-dd").format();
             return SafeArea(
               child: Form(
                 key: _formKey,
@@ -85,7 +85,7 @@ class DetailSuratView extends GetView<DetailSuratController> {
                       onTap: () async {
                         final selectedDate = await showDatePicker(
                           context: context,
-                          initialDate: surat.tanggalSurat!,
+                          initialDate: DateTime.parse(suratMasuk.tanggalSurat!),
                           firstDate: DateTime(2000),
                           lastDate: DateTime(2100),
                         );
@@ -156,15 +156,15 @@ class DetailSuratView extends GetView<DetailSuratController> {
                       onPressed: () async {
                         if (_formKey.currentState!.validate()) {
                           // Validasi berhasil, lakukan submit
-                          await controller.updateSuratKeluar(
-                              suratMasuk.id.toString(),
-                              controller.nomorC.text,
-                              controller.judulC.text,
-                              controller.tanggalC.text,
-                              controller.uploadC.text,
-                              controller.statusC.text,
-                              controller.selectedFile,
-                              suratMasuk.fileName);
+                          // await controller.updateSuratKeluar(
+                          //     suratMasuk.id.toString(),
+                          //     controller.nomorC.text,
+                          //     controller.judulC.text,
+                          //     controller.tanggalC.text,
+                          //     controller.uploadC.text,
+                          //     controller.statusC.text,
+                          //     controller.selectedFile,
+                          //     suratMasuk.fileName);
                           Get.back();
                           Get.snackbar(
                             "success",

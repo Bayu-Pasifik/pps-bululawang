@@ -7,6 +7,8 @@ abstract class Routes {
   static const SURAT_MASUK = _Paths.SURAT_MASUK;
   static const SURAT_KELUAR = _Paths.SURAT_KELUAR;
   static const DETAIL_SURAT = _Paths.DETAIL_SURAT;
+  static const LOGIN = _Paths.LOGIN;
+  static const TAMBAH_SURAT = _Paths.TAMBAH_SURAT;
 }
 
 abstract class _Paths {
@@ -15,4 +17,6 @@ abstract class _Paths {
   static const SURAT_MASUK = '/surat-masuk';
   static const SURAT_KELUAR = '/surat-keluar';
   static const DETAIL_SURAT = '/detail-surat';
+  static const LOGIN = '/login';
+  static const TAMBAH_SURAT = '/tambah-surat';
 }
