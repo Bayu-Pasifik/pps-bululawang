@@ -48,7 +48,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.TAMBAH_SURAT,
-      page: () => const TambahSuratView(),
+      page: () =>  TambahSuratView(),
       binding: TambahSuratBinding(),
     ),
   ];

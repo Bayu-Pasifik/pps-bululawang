@@ -3,15 +3,15 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart';
+
 import 'package:pps_bululawang/app/data/models/surat_masuk_models.dart';
 import 'package:pps_bululawang/app/routes/app_pages.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import '../controllers/surat_keluar_controller.dart';
 
 class SuratKeluarView extends GetView<SuratKeluarController> {
-  SuratKeluarView({Key? key}) : super(key: key);
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  const SuratKeluarView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -36,11 +36,6 @@ class SuratKeluarView extends GetView<SuratKeluarController> {
           child: FutureBuilder<List<SuratMasuk>>(
             future: controller.allSurat(token),
             builder: (context, snapshot) {
-              // if (snapshot.hasError) {
-              //   return Center(
-              //     child: Text("Error : ${snapshot.error}"),
-              //   );
-              // }
               if (snapshot.hasData) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(
@@ -49,85 +44,118 @@ class SuratKeluarView extends GetView<SuratKeluarController> {
                   );
                 }
               }
-              return ListView.separated(
-                separatorBuilder: (context, index) =>
-                    const SizedBox(height: 10),
-                padding: const EdgeInsets.all(14),
-                itemCount: snapshot.data?.length ?? 0,
-                itemBuilder: (context, index) {
-                  SuratMasuk suratMasuk = snapshot.data![index];
-                  // DateFormat dateFormat = DateFormat("yyyy-MM-dd");
-                  // String tanggal = dateFormat
-                  //     .format(suratMasuk.tanggalSurat ?? DateTime.now());
-                  return Material(
-                      borderRadius: BorderRadius.circular(10),
-                      color: const Color.fromARGB(255, 83, 82, 82),
-                      elevation: 5,
-                      child: Padding(
-                        padding: const EdgeInsets.all(10),
-                        child: ExpandablePanel(
-                            header: Text("${suratMasuk.noSurat}",
-                                style: GoogleFonts.prompt(color: Colors.white)),
-                            collapsed: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(suratMasuk.judul!,
-                                    style: GoogleFonts.prompt(
-                                        color: Colors.white)),
-                                Text(suratMasuk.tanggalSurat!,
-                                    style: GoogleFonts.prompt(
-                                        color: Colors.white)),
-                              ],
-                            ),
-                            expanded: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Text(suratMasuk.judul!,
-                                    style: GoogleFonts.prompt(
-                                        color: Colors.white)),
-                                Text(suratMasuk.tanggalSurat!,
-                                    style: GoogleFonts.prompt(
-                                        color: Colors.white)),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    IconButton(
-                                        onPressed: () {
-                                          // print(suratMasuk.file);
-                                          controller.downloadAndView(
-                                              suratMasuk.file!);
-                                        },
-                                        icon: const Icon(Icons.remove_red_eye)),
-                                    IconButton(
-                                        onPressed: () {
-                                          Get.toNamed(Routes.DETAIL_SURAT,
-                                              arguments: suratMasuk);
-                                        },
-                                        icon: const Icon(Icons.edit)),
-                                    IconButton(
-                                        onPressed: () {
-                                          // controller.hapusSurat(
-                                          //     );
-
-                                          Get.snackbar(
-                                            "success",
-                                            duration:
-                                                const Duration(seconds: 3),
-                                            "berhasil menghapus surat keluar",
-                                            colorText: Colors.white,
-                                            backgroundColor: Colors.lightBlue,
-                                            icon: const Icon(Icons.add_alert),
-                                          );
-                                        },
-                                        icon: const Icon(Icons.delete_forever)),
-                                  ],
-                                ),
-                              ],
-                            )),
-                      ));
+              return GetBuilder<SuratKeluarController>(
+                builder: (c) {
+                  return SmartRefresher(
+                    controller: c.refreschcontroller,
+                    enablePullDown: true,
+                    onRefresh: () => c.refreshData(token),
+                    child: ListView.separated(
+                      separatorBuilder: (context, index) =>
+                          const SizedBox(height: 10),
+                      padding: const EdgeInsets.all(14),
+                      itemCount: snapshot.data?.length ?? 0,
+                      itemBuilder: (context, index) {
+                        SuratMasuk suratMasuk = snapshot.data![index];
+                        return Material(
+                            borderRadius: BorderRadius.circular(10),
+                            color: const Color.fromARGB(255, 83, 82, 82),
+                            elevation: 5,
+                            child: Padding(
+                              padding: const EdgeInsets.all(10),
+                              child: ExpandablePanel(
+                                  header: Text("${suratMasuk.noSurat}",
+                                      style: GoogleFonts.prompt(
+                                          color: Colors.white)),
+                                  collapsed: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(suratMasuk.judul!,
+                                          style: GoogleFonts.prompt(
+                                              color: Colors.white)),
+                                      Text(suratMasuk.tanggalSurat!,
+                                          style: GoogleFonts.prompt(
+                                              color: Colors.white)),
+                                    ],
+                                  ),
+                                  expanded: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Text(suratMasuk.judul!,
+                                          style: GoogleFonts.prompt(
+                                              color: Colors.white)),
+                                      Text(suratMasuk.tanggalSurat!,
+                                          style: GoogleFonts.prompt(
+                                              color: Colors.white)),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          IconButton(
+                                              onPressed: () {
+                                                // print(suratMasuk.file);
+                                                controller.downloadAndView(
+                                                    suratMasuk.file!);
+                                              },
+                                              icon: const Icon(
+                                                  Icons.remove_red_eye)),
+                                          IconButton(
+                                              onPressed: () {
+                                                Get.toNamed(Routes.DETAIL_SURAT,
+                                                    arguments: suratMasuk);
+                                              },
+                                              icon: const Icon(Icons.edit)),
+                                          IconButton(
+                                              onPressed: () {
+                                                Get.defaultDialog(
+                                                  title: "Hapus Data ?",
+                                                  middleText:
+                                                      "Yakin Hapus Data ?",
+                                                  confirm: ElevatedButton(
+                                                      onPressed: () {
+                                                        controller.hapusSurat(
+                                                            token,
+                                                            suratMasuk.id
+                                                                .toString());
+                                                      },
+                                                      child: Text(
+                                                        "Ya",
+                                                        style:
+                                                            GoogleFonts.poppins(
+                                                                color: Colors
+                                                                    .white),
+                                                      )),
+                                                  cancel: ElevatedButton(
+                                                      onPressed: () {
+                                                        Get.back();
+                                                      },
+                                                      style: const ButtonStyle(
+                                                          backgroundColor:
+                                                              MaterialStatePropertyAll(
+                                                                  Colors.red)),
+                                                      child: Text(
+                                                        "Tidak",
+                                                        style:
+                                                            GoogleFonts.poppins(
+                                                                color: Colors
+                                                                    .white),
+                                                      )),
+                                                );
+                                              },
+                                              icon: const Icon(
+                                                  Icons.delete_forever)),
+                                        ],
+                                      ),
+                                    ],
+                                  )),
+                            ));
+                      },
+                    ),
+                  );
                 },
               );
             },

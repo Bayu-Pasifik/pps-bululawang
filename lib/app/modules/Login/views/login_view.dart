@@ -51,7 +51,7 @@ class LoginView extends GetView<LoginController> {
                   if (_formKey.currentState!.validate()) {
                     await controller.login(
                         controller.emailC.text, controller.passwordC.text);
-                    Get.offNamed(Routes.HOME,arguments: controller.token);
+                    Get.offNamed(Routes.HOME, arguments: controller.token);
                   }
                 },
                 child: Text("Login"))
