@@ -27,139 +27,122 @@ class SuratKeluarView extends GetView<SuratKeluarController> {
           actions: [
             IconButton(
                 onPressed: () {
+                  Get.delete<SuratKeluarController>();
                   Get.toNamed(Routes.TAMBAH_SURAT, arguments: token);
                 },
                 icon: const Icon(Icons.add))
           ],
         ),
         body: SafeArea(
-          child: FutureBuilder<List<SuratMasuk>>(
-            future: controller.allSurat(token),
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(
-                    child: CircularProgressIndicator(
-                        color: Colors.white, strokeWidth: 10),
-                  );
-                }
-              }
-              return GetBuilder<SuratKeluarController>(
-                builder: (c) {
-                  return SmartRefresher(
-                    controller: c.refreschcontroller,
-                    enablePullDown: true,
-                    onRefresh: () => c.refreshData(token),
-                    child: ListView.separated(
-                      separatorBuilder: (context, index) =>
-                          const SizedBox(height: 10),
-                      padding: const EdgeInsets.all(14),
-                      itemCount: snapshot.data?.length ?? 0,
-                      itemBuilder: (context, index) {
-                        SuratMasuk suratMasuk = snapshot.data![index];
-                        return Material(
-                            borderRadius: BorderRadius.circular(10),
-                            color: const Color.fromARGB(255, 83, 82, 82),
-                            elevation: 5,
-                            child: Padding(
-                              padding: const EdgeInsets.all(10),
-                              child: ExpandablePanel(
-                                  header: Text("${suratMasuk.noSurat}",
-                                      style: GoogleFonts.prompt(
-                                          color: Colors.white)),
-                                  collapsed: Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(suratMasuk.judul!,
-                                          style: GoogleFonts.prompt(
-                                              color: Colors.white)),
-                                      Text(suratMasuk.tanggalSurat!,
-                                          style: GoogleFonts.prompt(
-                                              color: Colors.white)),
-                                    ],
-                                  ),
-                                  expanded: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Text(suratMasuk.judul!,
-                                          style: GoogleFonts.prompt(
-                                              color: Colors.white)),
-                                      Text(suratMasuk.tanggalSurat!,
-                                          style: GoogleFonts.prompt(
-                                              color: Colors.white)),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          IconButton(
-                                              onPressed: () {
-                                                // print(suratMasuk.file);
-                                                controller.downloadAndView(
-                                                    suratMasuk.file!);
-                                              },
-                                              icon: const Icon(
-                                                  Icons.remove_red_eye)),
-                                          IconButton(
-                                              onPressed: () {
-                                                Get.toNamed(Routes.DETAIL_SURAT,
-                                                    arguments: suratMasuk);
-                                              },
-                                              icon: const Icon(Icons.edit)),
-                                          IconButton(
-                                              onPressed: () {
-                                                Get.defaultDialog(
-                                                  title: "Hapus Data ?",
-                                                  middleText:
-                                                      "Yakin Hapus Data ?",
-                                                  confirm: ElevatedButton(
-                                                      onPressed: () {
-                                                        controller.hapusSurat(
-                                                            token,
-                                                            suratMasuk.id
-                                                                .toString());
-                                                      },
-                                                      child: Text(
-                                                        "Ya",
-                                                        style:
-                                                            GoogleFonts.poppins(
-                                                                color: Colors
-                                                                    .white),
-                                                      )),
-                                                  cancel: ElevatedButton(
-                                                      onPressed: () {
-                                                        Get.back();
-                                                      },
-                                                      style: const ButtonStyle(
-                                                          backgroundColor:
-                                                              MaterialStatePropertyAll(
-                                                                  Colors.red)),
-                                                      child: Text(
-                                                        "Tidak",
-                                                        style:
-                                                            GoogleFonts.poppins(
-                                                                color: Colors
-                                                                    .white),
-                                                      )),
-                                                );
-                                              },
-                                              icon: const Icon(
-                                                  Icons.delete_forever)),
-                                        ],
-                                      ),
-                                    ],
-                                  )),
-                            ));
-                      },
-                    ),
-                  );
+            child: SmartRefresher(
+                controller: controller.refreschcontroller,
+                enablePullDown: true,
+                onRefresh: () {
+                  controller.refreshData(token);
+                  print(controller.suratList.length);
                 },
-              );
-            },
-          ),
-        ));
+                child: Obx(() => ListView.separated(
+                    separatorBuilder: (context, index) =>
+                        const SizedBox(height: 10),
+                    padding: const EdgeInsets.all(14),
+                    itemCount: controller.suratList.length,
+                    itemBuilder: (context, index) {
+                      SuratMasuk suratMasuk = controller.suratList[index];
+                      print(controller.suratList.length);
+                      return Material(
+                          borderRadius: BorderRadius.circular(10),
+                          color: const Color.fromARGB(255, 83, 82, 82),
+                          elevation: 5,
+                          child: Padding(
+                            padding: const EdgeInsets.all(10),
+                            child: ExpandablePanel(
+                                header: Text("${suratMasuk.noSurat}",
+                                    style: GoogleFonts.prompt(
+                                        color: Colors.white)),
+                                collapsed: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(suratMasuk.judul!,
+                                        style: GoogleFonts.prompt(
+                                            color: Colors.white)),
+                                    Text(suratMasuk.tanggalSurat!,
+                                        style: GoogleFonts.prompt(
+                                            color: Colors.white)),
+                                  ],
+                                ),
+                                expanded: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Text(suratMasuk.judul!,
+                                        style: GoogleFonts.prompt(
+                                            color: Colors.white)),
+                                    Text(suratMasuk.tanggalSurat!,
+                                        style: GoogleFonts.prompt(
+                                            color: Colors.white)),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        IconButton(
+                                            onPressed: () {
+                                              // print(suratMasuk.file);
+                                              controller.downloadAndView(
+                                                  suratMasuk.file!);
+                                            },
+                                            icon: const Icon(
+                                                Icons.remove_red_eye)),
+                                        IconButton(
+                                            onPressed: () {
+                                              Get.toNamed(Routes.DETAIL_SURAT,
+                                                  arguments: suratMasuk);
+                                            },
+                                            icon: const Icon(Icons.edit)),
+                                        IconButton(
+                                            onPressed: () {
+                                              Get.defaultDialog(
+                                                title: "Hapus Data ?",
+                                                middleText:
+                                                    "Yakin Hapus Data ?",
+                                                confirm: ElevatedButton(
+                                                    onPressed: () {
+                                                      controller.hapusSurat(
+                                                          token,
+                                                          suratMasuk.id
+                                                              .toString());
+                                                    },
+                                                    child: Text(
+                                                      "Ya",
+                                                      style:
+                                                          GoogleFonts.poppins(
+                                                              color:
+                                                                  Colors.white),
+                                                    )),
+                                                cancel: ElevatedButton(
+                                                    onPressed: () {
+                                                      Get.back();
+                                                    },
+                                                    style: const ButtonStyle(
+                                                        backgroundColor:
+                                                            MaterialStatePropertyAll(
+                                                                Colors.red)),
+                                                    child: Text(
+                                                      "Tidak",
+                                                      style:
+                                                          GoogleFonts.poppins(
+                                                              color:
+                                                                  Colors.white),
+                                                    )),
+                                              );
+                                            },
+                                            icon: const Icon(
+                                                Icons.delete_forever)),
+                                      ],
+                                    ),
+                                  ],
+                                )),
+                          ));
+                    })))));
   }
 }

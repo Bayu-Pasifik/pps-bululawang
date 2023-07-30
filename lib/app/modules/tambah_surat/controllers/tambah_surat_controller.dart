@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:path/path.dart' as path;
 import 'package:http/http.dart' as http;
+import 'package:pps_bululawang/app/modules/surat_keluar/controllers/surat_keluar_controller.dart';
 
 class TambahSuratController extends GetxController {
   late TextEditingController nomorC;
@@ -209,5 +210,12 @@ class TambahSuratController extends GetxController {
     fileC.dispose();
     jenisC.dispose();
     clear();
+    Get.put(SuratKeluarController());
+  }
+
+  @override
+  void onClose() {
+    Get.put(SuratKeluarController());
+    super.onClose();
   }
 }

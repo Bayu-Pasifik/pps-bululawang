@@ -33,7 +33,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.SURAT_KELUAR,
-      page: () => SuratKeluarView(),
+      page: () => const SuratKeluarView(),
       binding: SuratKeluarBinding(),
     ),
     GetPage(

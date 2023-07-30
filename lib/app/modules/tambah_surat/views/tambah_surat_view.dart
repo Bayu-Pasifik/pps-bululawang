@@ -22,6 +22,7 @@ class TambahSuratView extends GetView<TambahSuratController> {
           centerTitle: true,
           elevation: 0,
           backgroundColor: const Color(0XFF2E2E2E),
+         
         ),
         body: Form(
           key: _formKey,

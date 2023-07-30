@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 import 'package:get/get.dart';
 import 'package:pps_bululawang/app/data/models/surat_masuk_models.dart';
@@ -12,6 +13,7 @@ class SuratKeluarController extends GetxController {
       RefreshController(initialRefresh: true);
   RxList<SuratMasuk> suratList = <SuratMasuk>[].obs;
   String baseUrl = "https://apippslaravel.kolektifhost.com";
+  final token = Get.arguments;
   Future<List<SuratMasuk>> allSurat(String token) async {
     Uri url = Uri.parse('$baseUrl/api/suratkeluar');
     var response =
@@ -19,7 +21,9 @@ class SuratKeluarController extends GetxController {
     var tempData = json.decode(response.body)["data"];
     update();
     var data = tempData.map((e) => SuratMasuk.fromJson(e)).toList();
-    suratList.value = List<SuratMasuk>.from(data);
+    // suratList.value = List<SuratMasuk>.from(data);
+    var listSurat = List<SuratMasuk>.from(data);
+    suratList.assignAll(listSurat);
     update();
     return suratList;
   }
@@ -71,7 +75,7 @@ class SuratKeluarController extends GetxController {
     }
   }
 
-   void refreshData(String token) async {
+  void refreshData(String token) async {
     if (refreschcontroller.initialRefresh == true) {
       await allSurat(token);
       update();
@@ -81,14 +85,4 @@ class SuratKeluarController extends GetxController {
     }
   }
 
-  // void loadData(String genres) async {
-  //   if (next.value == true) {
-  //     hal.value = hal.value + 1;
-  //     await getMangaBaseGenre(genres);
-  //     update();
-  //     return allRefresh.loadComplete();
-  //   } else {
-  //     return allRefresh.loadNoData();
-  //   }
-  // }
 }
