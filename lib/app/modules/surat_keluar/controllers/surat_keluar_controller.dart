@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pps_bululawang/app/data/models/surat_masuk_models.dart';
 import 'package:http/http.dart' as http;
@@ -33,17 +34,33 @@ class SuratKeluarController extends GetxController {
 
   // ! delete data
   Future<void> hapusSurat(String token, String id) async {
-    Uri url = Uri.parse('$baseUrl/suratkeluar/$id');
+    Uri url = Uri.parse('$baseUrl/api/suratkeluar/$id');
     final response =
         await http.delete(url, headers: {'Authorization': 'Bearer $token'});
     print(response.statusCode);
     if (response.statusCode == 200) {
-      // await allSurat(); // Perbarui data surat keluar
+      await allSurat(token); // Perbarui data surat keluar
       update();
+      Get.snackbar(
+        "Berhasil",
+        duration: const Duration(seconds: 3),
+        "Berhasil menghapus data",
+        colorText: Colors.white,
+        backgroundColor: Colors.blue,
+        icon: const Icon(Icons.mail),
+      );
       print('Data berhasil dihapus');
     } else {
       // Gagal menghapus data
       print('Gagal menghapus data. Status code: ${response.statusCode}');
+      Get.snackbar(
+        "Gagal",
+        duration: const Duration(seconds: 3),
+        "Gagal menghapus surat : ${response.statusCode}",
+        colorText: Colors.white,
+        backgroundColor: Colors.red,
+        icon: const Icon(Icons.mail),
+      );
     }
   }
 
@@ -84,5 +101,4 @@ class SuratKeluarController extends GetxController {
       return refreschcontroller.refreshFailed();
     }
   }
-
 }

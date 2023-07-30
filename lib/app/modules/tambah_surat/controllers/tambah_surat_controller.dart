@@ -130,7 +130,7 @@ class TambahSuratController extends GetxController {
   // ! buat surat masuk
 
   Future<void> createSuratMasuk(String token, String no, String judul,
-      String tanggalSurat, String status, String jenis, String filePath) async {
+      String tanggalSurat, String status, String filePath) async {
     try {
       Uri url = Uri.parse('$baseUrl/api/suratmasuk');
       var request = http.MultipartRequest('POST', url);
@@ -142,7 +142,7 @@ class TambahSuratController extends GetxController {
       if (filePath.isNotEmpty) {
         request.files.add(await http.MultipartFile.fromPath('file', filePath));
       }
-      request.fields['jenis_surat'] = jenis;
+      request.fields['jenis_surat'] = jenisSurat.value;
       var response = await request.send();
       if (response.statusCode == 201) {
         // Permintaan sukses

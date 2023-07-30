@@ -272,16 +272,28 @@ class TambahSuratView extends GetView<TambahSuratController> {
               const SizedBox(height: 10),
               ElevatedButton(
                 onPressed: () async {
-                  // print("id saat ini : ${controller.selectedJenisIds}");
-                  await controller.createSuratKeluar(
+                
+                  if(_formKey.currentState!.validate()){
+                    if(controller.isSuratKeluarSelected.isTrue){
+                      await controller.createSuratKeluar(
                     token,
                     controller.nomorC.text,
                     controller.judulC.text,
                     controller.tanggalC.text,
                     controller.statusC.text,
-                    // controller.jenisSurat.value,
                     controller.selectedFilePath!,
                   );
+                    } else {
+                      await controller.createSuratMasuk(
+                    token,
+                    controller.nomorC.text,
+                    controller.judulC.text,
+                    controller.tanggalC.text,
+                    controller.statusC.text,
+                    controller.selectedFilePath!,
+                  );
+                    }
+                  }
                 },
                 child: Text("Submit",
                     style: GoogleFonts.poppins(color: Colors.white)),
